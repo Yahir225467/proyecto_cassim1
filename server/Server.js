@@ -19,6 +19,24 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+
+//Endpoint para obtener los municipios de Hidalgo
+app.get('/municipios', async (req, res) => {
+  try {
+    const result = await pool.query(`
+      SELECT id, ST_AsGeoJSON(ST_Transform(geom, 4326)) AS geom
+      FROM public.municipios
+    `);
+    res.json(result.rows);
+  } catch (error) {
+    console.error('Error al consultar la base de datos:', error.message);
+    res.status(500).json({
+      error: 'Error al consultar la base de datos',
+      details: error.message,
+    });
+  }
+});
+
 // Endpoint para obtener los puntos georeferenciales de escasez de agua
 app.get('/padron', async (req, res) => {
   const { page = 1, limit = 100 } = req.query; // Valores predeterminados
@@ -38,24 +56,6 @@ app.get('/padron', async (req, res) => {
   }
 });
 
-
-
-//Endpoint para obtener los municipios de Hidalgo
-app.get('/municipios', async (req, res) => {
-  try {
-    const result = await pool.query(`
-      SELECT id, ST_AsGeoJSON(geom) AS geom
-      FROM public.municipios
-    `);
-    res.json(result.rows); // Enviar los datos en formato JSON
-  } catch (error) {
-    console.error('Error al consultar la base de datos:', error.message);
-    res.status(500).json({
-      error: 'Error al consultar la base de datos',
-      details: error.message,
-    });
-  }
-});
 
 
 // Iniciar el servidor

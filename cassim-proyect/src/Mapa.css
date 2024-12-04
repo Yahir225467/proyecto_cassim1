@@ -1,0 +1,18 @@
+/* Estilo para los polígonos */
+.custom-polygon {
+    stroke: blue; /* Color del borde */
+    stroke-width: 2; /* Grosor del borde */
+    fill: none; /* Sin relleno */
+  }
+  
+  /* Estilo para los puntos */
+  .custom-icon {
+    width: 10px;
+    height: 10px;
+    background-color: red; /* Color del punto */
+    border-radius: 50%; /* Forma circular */
+    border: 1px solid white; /* Borde blanco */
+    position: relative;
+    z-index: 1000; /* Asegura que esté sobre los polígonos */
+  }
+  
